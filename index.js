@@ -3,10 +3,13 @@ import { getAppointment } from './services/queries.js'
 const app = express();
 const port = 3000;
 
+app.use(express.urlencoded({ extended: true }))
 
-app.get('/', async (req, res) => {
-  const queryResponse = await getAppointment('09:00');
-  res.send(queryResponse)
+app.post('/', async (req, res) => {
+  const queryResponse = await getAppointment(req, req.body.selectTime);
+  // console.log(req.body);
+  console.log(queryResponse)
+  // res.send()
 })
 
 app.listen(port, () => {
