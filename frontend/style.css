@@ -1,0 +1,31 @@
+body {
+    margin: 0 auto;
+    text-align: center;
+    background-color: darkslategray;
+    color: whitesmoke;
+}
+
+input, select {
+    display: block;
+    margin: 0 auto;
+    font-size: 1rem;
+}
+
+/* select {
+    margin-top: 1rem;
+} */
+
+button {
+    margin-top: 1rem;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+button:hover {
+    transition: 0.3s;
+    color: whitesmoke;
+    background-color: teal;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
