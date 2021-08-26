@@ -1,13 +1,18 @@
 import express from 'express';
-import { getAppointment } from './services/queries.js'
+import cron from 'node-cron';
+import { getAppointment, resetAppointments } from './services/queries.js'
 const app = express();
 const port = 3000;
+
+cron.schedule('0 18 * * *', async () => {
+  console.log("it's time");
+  await resetAppointments();
+});
 
 app.use(express.urlencoded({ extended: true }))
 
 app.post('/', async (req, res) => {
   const queryResponse = await getAppointment(req, req.body.selectTime);
-  // console.log(req.body);
   console.log(queryResponse)
   // res.send()
 })
