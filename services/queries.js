@@ -1,8 +1,9 @@
 import { connection } from './db_access.js';
+import { generateHash } from './encryption.js'
 
 export const getAppointment = async (req, hour) => {
 
-    createCustomer(req);
+    await createCustomer(req);
     
     const [rows] = await connection.query(`SELECT * FROM appointments WHERE time='${hour}'`);
 
@@ -25,10 +26,12 @@ const setAppointment = async(req, hour) => {
 }
 
 const createCustomer = async(req) => {
-    const requestBody = req.body;
+    const {firstName, lastName, email, phone, password} = req.body;
+    const hashedPassword = await generateHash(password);
+    console.log(hashedPassword)
     const customers = await getCustomer(req);
     if (!customers[0]) {
-        await connection.query(`INSERT INTO customers (first_name, last_name, email, phone) VALUES ('${requestBody.firstName}', '${requestBody.lastName}', '${requestBody.email}', '${requestBody.phone}')`);
+        await connection.query(`INSERT INTO customers (first_name, last_name, email, phone, password) VALUES ('${firstName}', '${lastName}', '${email}', '${phone}', '${hashedPassword}')`);
     }
     else {
         return console.log("Customer already in Database");
@@ -41,6 +44,9 @@ const getCustomer = async(req) => {
     return customers;
 }
 
-
+export const resetAppointments = async() => {
+    await connection.query(`UPDATE appointments SET available=1`);
+    console.log('All appointments are now available!');
+}
 
 
