@@ -1,8 +1,6 @@
 import bcrypt from 'bcryptjs';
 
 export const generateHash = async (password, saltRounds=10) => {
-    console.log('got here');
-
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
@@ -12,6 +10,6 @@ export const generateHash = async (password, saltRounds=10) => {
     
 }
 
-// (async () => {
-//     await generateHash('12345');
-// })()
+export const checkPassword = async(password, passwordHash) => {
+    return await bcrypt.compare(password, passwordHash);
+}

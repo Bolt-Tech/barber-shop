@@ -1,5 +1,5 @@
 import { connection } from './db_access.js';
-import { generateHash } from './encryption.js'
+import { generateHash, checkPassword } from './encryption.js'
 
 export const getAppointment = async (req, hour) => {
 
@@ -25,10 +25,10 @@ const setAppointment = async(req, hour) => {
     await connection.query(`UPDATE appointments SET available = 0, customer_id = '${parseInt(customerId)}' WHERE time='${hour}'`);
 }
 
-const createCustomer = async(req) => {
-    const {firstName, lastName, email, phone, password} = req.body;
+export const createCustomer = async(req) => {
+    const { firstName, lastName, email, phone, password } = req.body;
     const hashedPassword = await generateHash(password);
-    console.log(hashedPassword)
+    console.log(req.body)
     const customers = await getCustomer(req);
     if (!customers[0]) {
         await connection.query(`INSERT INTO customers (first_name, last_name, email, phone, password) VALUES ('${firstName}', '${lastName}', '${email}', '${phone}', '${hashedPassword}')`);
@@ -49,4 +49,10 @@ export const resetAppointments = async() => {
     console.log('All appointments are now available!');
 }
 
-
+export const login = async(req) => {
+    const { email, password } = req.body;
+    const [rows] = await connection.query(`SELECT password FROM customers WHERE email='${email}'`);
+    const hashedPassword = rows[0].password;
+    const verfiedPassword = await checkPassword(password, hashedPassword);
+    console.log(verfiedPassword)
+}
