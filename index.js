@@ -1,12 +1,12 @@
 import express from 'express';
 import cron from 'node-cron';
-import { getAppointment, resetAppointments, createCustomer, login } from './services/queries.js'
+import { getAppointment, resetAppointments, createCustomer, login, setAppointment } from './services/queries.js'
 import cors from 'cors';
 const app = express();
 const port = 3000;
 app.use(cors())
 
-cron.schedule('0 18 * * *', async () => {
+cron.schedule('36 10 * * *', async () => {
   console.log("it's time");
   await resetAppointments();
 });
@@ -14,10 +14,8 @@ cron.schedule('0 18 * * *', async () => {
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ extended: true }))
 
-app.post('/', async (req, res) => {
-  const queryResponse = await getAppointment(req, req.body.selectTime);
-  console.log(queryResponse)
-  // res.send()
+app.get('/', async (req, res) => {
+  res.send('Invalid route');
 })
 
 app.post('/signUp', async (req, res) => {
@@ -27,8 +25,12 @@ app.post('/signUp', async (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
+  await login(req, res);
+})
+
+app.post('/set-appointment', async (req, res) => {
   console.log(req.body);
-  login(req);
+  await setAppointment(req.body);
   // res.send()
 })
 
