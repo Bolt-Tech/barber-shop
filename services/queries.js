@@ -1,8 +1,9 @@
 import e from 'express';
 import { connection } from './db_access.js';
 import { generateHash, checkPassword } from './encryption.js'
+import jwt from 'jsonwebtoken';
 
-export const getAppointment = async (hour) => {
+export const getAppointment = async (hour) => {    
     const [rows] = await connection.query(`SELECT * FROM appointments WHERE time='${hour}'`);
     if (parseInt(hour) < 9 || parseInt(hour) > 18) {
         console.log("Barber shop is closed. Please return between 09:00-18:00");
@@ -17,10 +18,10 @@ export const getAppointment = async (hour) => {
     }
 }
 
-export const setAppointment = async (appointmentData) => {
+export const setAppointment = async(appointmentData) => {
     const { selectedTime, phone } = appointmentData;
     const appointmentAvailable = await getAppointment(selectedTime);
-    if (appointmentAvailable) {
+    if(appointmentAvailable) {
         const customers = await getCustomer(phone);
         if (customers[0]) {
             const { id: customerId } = customers[0]
@@ -33,14 +34,14 @@ export const setAppointment = async (appointmentData) => {
     }
 }
 
-export const createCustomer = async (req) => {
+export const createCustomer = async(req) => {
     const { firstName, lastName, email, phone, password } = req.body;
     const hashedPassword = await generateHash(password);
     const customers = await getCustomer(req);
     if (!customers[0]) {
         try {
             await connection.query(`INSERT INTO customers (first_name, last_name, email, phone, password) VALUES ('${firstName}', '${lastName}', '${email}', '${phone}', '${hashedPassword}')`);
-            console.log("Customer added successfully");
+            console.log("Customer added successfully");    
         } catch (error) {
             console.log(error)
         }
@@ -50,16 +51,16 @@ export const createCustomer = async (req) => {
     }
 }
 
-const getCustomer = async (phone) => {
+const getCustomer = async(phone) => {
     try {
         const [customers] = await connection.query(`SELECT * FROM customers WHERE phone='${phone}'`);
         return customers;
-    } catch (error) {
+    } catch (error){
         console.log(error);
     }
 }
 
-export const resetAppointments = async () => {
+export const resetAppointments = async() => {
     try {
         console.log('All appointments are now available!');
         await connection.query(`UPDATE appointments SET available=1, customer_id=NULL`);
@@ -68,16 +69,22 @@ export const resetAppointments = async () => {
     }
 }
 
-export const login = async (req, res) => {
+export const login = async(req, res) => {
     const { email, password } = req.body;
     const [rows] = await connection.query(`SELECT password FROM customers WHERE email='${email}'`);
     if (rows[0]) {
         const hashedPassword = rows[0].password;
         const verfiedPassword = await checkPassword(password, hashedPassword);
         console.log(verfiedPassword)
-        res.status(200).send('User logged in successfully!')
+        if (verfiedPassword) {
+            const token = jwt.sign({ name: email }, process.env.JWT_TOKEN_SECRET, { expiresIn: '5h' });
+            res.status(200).json({accessToken: token});       
+            }
+        else {
+            res.status(404).send('Username or password are incorrect');
+        }
     }
     else {
-        res.status(404).send('User does not exist!');
+        res.status(404).send('Username or password are incorrect');
     }
 }
