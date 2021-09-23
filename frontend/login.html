@@ -16,11 +16,11 @@
     <label for="password">Password</label>
     <input id="password" name="password" type="password">
     <button id="login">Log in</button>
-    <h3 id="error"></h3>
+    <h3 id="loginMessage"></h3>
 
     <script>
         const signInButton = document.getElementById("login");
-        const h3Error = document.getElementById("error");
+        const loginMessage = document.getElementById("loginMessage");
         signInButton.addEventListener('click', async() => {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -29,11 +29,12 @@
                 "email": email,
                 "password": password
             });
-            console.log(response);
-
+            console.log(response)
+            const { accessToken } = response.data;
+            localStorage.setItem('x-api-token', accessToken);
+            loginMessage.innerText = "User logged in successfully";
             } catch (error){
-                console.log(error.response.data)
-                h3Error.innerText = "User not found.";
+                loginMessage.innerText = error.response.data;
             }
         })
     </script>

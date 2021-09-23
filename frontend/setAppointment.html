@@ -44,6 +44,9 @@
                 const response = await axios.post('http://localhost:3000/set-appointment', {
                 "selectedTime": selectedValue,
                 "phone": phone
+            },
+            {
+                headers: {'x-api-token': localStorage['x-api-token']}
             });
             } catch (error) {
                 console.log(error);
