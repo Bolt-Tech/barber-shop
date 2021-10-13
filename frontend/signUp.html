@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,45 +9,53 @@
     <title>Sign up</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
-    <h2>Please sign up!</h2>
-    <label for="firstName">First Name</label>
-    <input id="firstName" name="firstName" type="text">
+    <div class="form-section">
+        <h1 class="title">Welcome to Barber Shop!</h1>
+        <h2 class="subTitle">Let's create your account to make your appointment for styling your hair/facial styles:</h2>
 
-    <label for="lastName">Last Name</label>
-    <input id=lastName name="lastName" type="text">
+        <label for="firstName">First Name</label>
+        <input id="firstName" name="firstName" type="text">
 
-    <label for="phone">Phone Number</label>
-    <input id="phone" name="phone" type="text">
+        <label for="lastName">Last Name</label>
+        <input id=lastName name="lastName" type="text">
 
-    <label for="email">Email</label>
-    <input id="email" name="email" type="text">
+        <label for="phone">Phone Number</label>
+        <input id="phone" name="phone" type="text">
 
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="text">
 
-    <button id="signUp">Sign Up</button>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password">
+
+        <button id="signUp">Sign Up</button>
+
+        <a href="login.html">Already have account? Log in</a>
+
+    </div>
 
     <script>
         const signUpButton = document.getElementById("signUp");
-        signUpButton.addEventListener('click', async() => {
+        signUpButton.addEventListener('click', async () => {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const lastName = document.getElementById("lastName").value;
             const firstName = document.getElementById("firstName").value;
             const phone = document.getElementById("phone").value;
 
-            const response = await axios.post('http://localhost:3000/signUp',
-                {
+            const response = await axios.post('http://localhost:3000/signUp', {
                     "email": email,
                     "password": password,
                     "lastName": lastName,
                     "firstName": firstName,
                     "phone": phone
                 }
-                
-                );
+
+            );
         })
     </script>
 </body>
+
 </html>

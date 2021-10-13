@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,15 +9,23 @@
     <title>Log in</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-<body>
-    <h2>Please log in!</h2>
-    <label for="email">Email</label>
-    <input id="email" name="email" type="text">
 
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password">
-    <button id="login">Log in</button>
-    <h3 id="loginMessage"></h3>
+<body>
+    <div class="form-section">
+        <h1 class="title">Welcome back! Let's login your account to manage your appointment:</h1>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="text">
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password">
+        <button id="login">Log in</button>
+        <h3 id="loginMessage"></h3>
+
+        <a href="signUp.html">Don't have account? Let's create new one!</a>
+        <!-- <a href="getToken.html">Don't have token? Fetch new token to access your account with appointment!</a> -->
+        <a href="http://localhost:3000/get-token">Don't have token? Fetch new token to access your account with appointment!</a>
+    </div>
 
     <script>
         const signInButton = document.getElementById("login");
@@ -30,13 +39,20 @@
                 "password": password
             });
             console.log(response)
-            const { accessToken } = response.data;
+            const { accessToken, userType } = response.data;
             localStorage.setItem('x-api-token', accessToken);
-            loginMessage.innerText = "User logged in successfully";
+            
+            loginMessage.innerText = "User logged in successfully, redirecting to appointment page soon...";
+            setTimeout(() => {
+                //window.location.href = './setAppointment.html?usertype=' + userType; // Debug on query if admin or customer only
+            window.location.href = (userType == 'customer') ? './setAppointment.html' : 'http://localhost:3000/admin-login'; //Customer will redirect to appointment page, else admin view customer list data
+        }, 2000);
+
             } catch (error){
                 loginMessage.innerText = error.response.data;
             }
         })
     </script>
 </body>
+
 </html>

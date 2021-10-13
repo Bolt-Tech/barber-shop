@@ -5,6 +5,27 @@ body {
     color: whitesmoke;
 }
 
+.form-section {
+    margin: 50px auto;
+    background-color: cadetblue;
+    width: 50%;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.title {
+    color: gold;
+}
+
+.subTitle {
+    color: lightcyan;
+}
+
+label {
+    color: cyan;
+    font-size: 1.2rem;
+}
+
 input, select {
     display: block;
     margin: 0 auto;
@@ -28,4 +49,21 @@ button:hover {
     border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
+}
+
+a {
+    display: block;
+    margin: 20px auto;
+    font-weight: bold;
+}
+
+a:hover {
+    transition: 0.3s;
+    color: whitesmoke;
+    background-color: darkcyan;
+    border-radius: 10px;
+    font-weight: bolder;
+    cursor: pointer;
+    width: fit-content;
+    padding: 10px;
 }
