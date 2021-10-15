@@ -11,21 +11,30 @@ export const getToken = async(req, res) => {
     }
 }
 
+//-----------------------------------[Setting: Appointments]-----------------------------------//
+
+//Styles for HTML Table to display customer + time data for admin
+const tableStyle = 'margin: 30px auto;border: black solid 2px;border-collapse: collapse;'
+const borderCells = 'font-size: calc(1em + 1vmin);border: solid 2px black;padding:20px;'
+
 //This function used to generate table data appointments list and customer names for admin to read.
-export const getAllAppointments = async (res) => {    
-    const [rows] = await connection.query(`SELECT time, concat(first_name,' ', last_name) as fullname FROM appointments a INNER JOIN customers c ON c.id=a.customer_id WHERE time IS NOT NULL`);
+export const getAllAppointments = async (res) => {
+    const takenAppointmentSQL = `SELECT time, concat(first_name,' ', last_name) as fullname FROM appointments a INNER JOIN customers c ON c.id=a.customer_id WHERE time IS NOT NULL`;
+    const [rows] = await connection.query(takenAppointmentSQL);
     if (rows[0]) {
-        let htmlTable = `<table>
+        let htmlTable = `<h1 style="margin: 10px auto; text-align: center;font-size: calc(0.75em + 3vmin);text-decoration: underline;">Customers & Appointment Table Data:</h1>
+        <table style="${tableStyle}">
+        <caption style="margin: 10px;font-size: calc(0.55em + 1vmin)">Currently used appointments list:</caption>
         <thead>
         <tr>
-        <th>Full name</th>
-        <th>Time</th>
+        <th style="background-color: #001f3f;color: whitesmoke;${borderCells}">Full name</th>
+        <th style="background-color: #b36522;color: whitesmoke;${borderCells}">Time</th>
         </tr>
         </thead>`;
         rows.forEach(row => {
             htmlTable += `<tr>
-            <td>${row.fullname}</td> 
-            <td>${row.time}</td>
+            <td style="${borderCells}">${row.fullname}</td> 
+            <td style="${borderCells}">${row.time}</td>
             </tr>`;
         });
         htmlTable += `</table>`;
@@ -93,6 +102,8 @@ export const resetAppointments = async() => {
         console.log(error)
     }
 }
+
+//-----------------------------------[Setting: Customers/Admins]-----------------------------------//
 
 //A function to create customer account
 export const createCustomer = async(req) => {
