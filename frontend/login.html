@@ -40,13 +40,19 @@
             });
             console.log(response)
             const { accessToken, userType } = response.data;
-            localStorage.setItem('x-api-token', accessToken);
+
+            let expireTime = new Date();
+            expireTime.setTime(expireTime.getTime() + 1 * 3600 * 1000); //Expires 1 hour
+            document.cookie = `accessToken = ${accessToken}; expires=${expireTime.toUTCString()}; SameSite=None; Secure`;
             
             loginMessage.innerText = "User logged in successfully, redirecting to appointment page soon...";
             setTimeout(() => {
-                //window.location.href = './setAppointment.html?usertype=' + userType; // Debug on query if admin or customer only
-            window.location.href = (userType == 'customer') ? './setAppointment.html' : 'http://localhost:3000/admin-login'; //Customer will redirect to appointment page, else admin view customer list data
-        }, 2000);
+                //Debug on query if admin or customer only
+                //window.location.href = './setAppointment.html?usertype=' + userType;
+
+                //Customer will redirect to appointment page, else admin view customer list data
+                window.location.href = (userType == 'customer') ? './setAppointment.html' : 'http://localhost:3000/admin-login';
+            }, 2000);
 
             } catch (error){
                 loginMessage.innerText = error.response.data;

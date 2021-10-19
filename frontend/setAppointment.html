@@ -39,7 +39,23 @@
     <script>
         const button = document.getElementById("sendButton");
         const select = document.getElementById("selectTime");
-        
+        //Get cookie from browser to access appointment
+        function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
         button.addEventListener('click', async () => {
             const selectedValue = select.value;
 
@@ -48,7 +64,7 @@
                 "selectedTime": selectedValue,
             },
             {
-                headers: {'x-api-token': localStorage['x-api-token']}
+                headers: {'x-api-token': getCookie("accessToken")}
             });
             } catch (error) {
                 console.log(error);
