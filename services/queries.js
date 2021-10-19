@@ -4,8 +4,9 @@ import jwt from 'jsonwebtoken';
 
 export const getToken = async(req, res) => {
     try {
-        const token = jwt.sign({ name: "Muli" }, 'shhhhh');
-        res.send(token);
+        const token = jwt.sign({ name: "Barber Shop" }, 'shhhhh');
+        res.send(`<h3>Token key here:</h3>
+        <h4 style="background-color: darkorange; width: max-content;">${token}</h4>`);
     } catch (error) {
         console.log(error)
     }
@@ -64,7 +65,6 @@ export const getAppointment = async (hour) => {
 }
 
 export const setAppointment = async(appointmentData, token) => {
-    //const { selectedTime, phone } = appointmentData;
     const { selectedTime } = appointmentData;
     const appointmentAvailable = await getAppointment(selectedTime);
     let userEmail = "";
