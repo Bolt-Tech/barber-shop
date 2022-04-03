@@ -9,7 +9,11 @@ Let's Create an account for admins using behind-the-scene database, then sign in
 ## Prerequisites
 
 * **[NodeJS](https://nodejs.org/en/)** | Package manager to run `npm`/`node` commands.
-* **[XAMPP](https://www.apachefriends.org/index.html)** | To access MySQL DB for account locally.
+
+* Choose one Databases Software + GUI (or you can use a different product not from list as long as it supports SQL)
+
+  * **[XAMPP](https://www.apachefriends.org/index.html)**
+  * [MySQL](https://dev.mysql.com/downloads/installer/) - [Install Guide](https://www.onlinetutorialspoint.com/mysql/install-mysql-on-windows-10-step-by-step.html)
 
 * **[Visual Studio Code](https://code.visualstudio.com/)** | Install some extensions (**Recommended**):
   * **[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)** | Run HTML to host live.
@@ -64,6 +68,7 @@ There will be connection this with a customer table above. Also availability val
 
 MYSQL_HOST=localhost
 MYSQL_USER=root
+# If you have setup your password by XAMPP/Workbench or other software, insert it here, otherwise leave it empty (no password)
 MYSQL_PASSWORD=
 MYSQL_DATABASE=barber
 
