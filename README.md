@@ -53,6 +53,8 @@ There will be connection this with a customer table above. Also availability val
 
 ## Usage
 
+> In my case, I use XAMPP for this guide, or if you use Workbench, the process should be similar, so skip to **step 2**: In Toolbar `Create Schema` with the same file name `barber`, then head to toolbar and click `Server -> Data Import`
+
 1. Now let's get started by running `XAMPP Control Panel`, then click `Start` **Apache** & **MySQL**, and click `Admin` on **MySQL** tab to open **phpMyAdmin** database.
 
 ![XAMPP Startup](demo/XAMPP-Startup.jpg)
@@ -64,7 +66,7 @@ There will be connection this with a customer table above. Also availability val
 4. Now, dotenv has already preconfigured with sample input (no need to edit anything), including `JWT_TOKEN_SECRET`. Create new `.env` file in root directory and paste the following code:
 
 ```bash
-# Use XAMPP to access database "barber"
+# Use XAMPP or MySQL Workbench to access database "barber"
 
 MYSQL_HOST=localhost
 MYSQL_USER=root
